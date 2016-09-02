@@ -55,3 +55,20 @@ export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export LS_COLORS=ExFxBxDxCxegedabagacad
 alias ls='ls -GFh'
+
+# nicolashery's mac-dev-setup suggested that I get the system python, so ok:
+PATH=/usr/local/share/python:$PATH
+export PATH
+
+# virtualenvwrapper
+export WORKON_HOME=~/venvs
+source /usr/local/bin/virtualenvwrapper.sh
+
+# added automatically
+[[ -s ~/.openai/bashrc ]] && source ~/.openai/bashrc
+
+# I always want to work on ai on this machine
+workon ai
+
+# set up Atlas key but don't post it on github
+source ~/.atlas.key
