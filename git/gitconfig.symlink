@@ -49,3 +49,7 @@
 [user]
 	name = catherio
 	email = catherio@mit.edu
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true

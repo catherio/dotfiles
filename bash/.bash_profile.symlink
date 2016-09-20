@@ -72,3 +72,6 @@ workon ai
 
 # set up Atlas key but don't post it on github
 source ~/.atlas.key
+
+# docify
+source ~/.openai/docify.sh
