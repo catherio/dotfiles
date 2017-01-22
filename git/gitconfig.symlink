@@ -5,6 +5,7 @@
         protocol = https
 [alias]
 	co = checkout
+	st = status
         promote = !$ZSH/bin/git-promote
         wtf     = !$ZSH/bin/git-wtf
         rank-contributors = !$ZSH/bin/git-rank-contributors
@@ -30,8 +31,8 @@
 #    	untracked = cyan
 
 [core]
-        excludesfile = ~/.gitignore
-        editor = vim
+	excludesfile = /Users/catherio/.gitignore
+	editor = emacs
 [apply]
         whitespace = nowarn
 [mergetool]
@@ -53,3 +54,8 @@
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f
 	required = true
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = [mergetool "sourcetree"]
+	cmd = /Users/catherio/Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true

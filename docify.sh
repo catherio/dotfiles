@@ -1,6 +1,5 @@
 docify() {
 	env="$1"
-
 	export DOCKER_CERT_PATH=~/.openai/personal/sci/
 	export DOCKER_TLS_VERIFY=1
 
@@ -27,6 +26,7 @@ docify() {
 		export DOCKER_HOST=tcp://4.public-devbox.sci.openai.org:2376
 	elif [ "$env" == machine ]; then
 		eval $(docker-machine env default)
+		docker-machine start default
 	elif [ "$env" == local ]; then
 		unset DOCKER_API_VERSION
 		unset DOCKER_HOST DOCKER_IP DOCKER_CERT_PATH DOCKER_TLS_VERIFY DOCKER_MACHINE_NAME
