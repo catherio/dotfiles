@@ -67,14 +67,65 @@ source /usr/local/bin/virtualenvwrapper.sh
 # added automatically
 [[ -s ~/.openai/bashrc ]] && source ~/.openai/bashrc
 
-# I always want to work on ai on this machine
-workon ai
-
 # set up Atlas key but don't post it on github
 source ~/.atlas.key
 
 # docify
 source ~/.dotfiles/docify.sh
 
-# where's tensorflow?
-export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-0.10.0-py2-none-any.whl
+# where's tensorflow? python3 edition
+# use the "virtualenv" section of the install guide at https://www.tensorflow.org/versions/r0.11/get_started/os_setup.html
+# Mac OS X, CPU only, Python 3.4 or 3.5:
+export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-0.11.0-py3-none-any.whl
+
+# sometimes I want to strip protocol and port
+# ippart tcp://192.168.99.100:2376 -> 192.168.99.100
+alias ippart="sed 's/^[^0-9]*\([a-z0-9\.]*\):[0-9]*$/\1/' <<<"
+
+# directories I browse to a lot
+alias cdf='cd ~/openai/universe-envs/flashgames/'
+alias cdc='cd ~/openai/universe-envs/controlplane/'
+alias cdl='cd ~/openai/universe-envs/allocator/'
+alias cdu='cd ~/openai/universe/'
+alias cdd='cd ~/openai/gym-demonstration/'
+alias cdg='cd ~/openai/gym/'
+alias cda='cd ~/openai/vnc-agents/'
+alias cdb='cd ~/openai/docker-buildtool/'
+alias cdr='cd ~/openai/resource-accounting/'
+alias cdk='cd ~/openai/kubernetes-ec2-autoscaler/'
+alias cds='cd ~/openai/scoreboard-gym/'
+
+# added by Anaconda3 4.2.0 installer
+export PATH="/Users/catherio/anaconda3/bin:$PATH"
+
+# OUTDATED: python2 virtualenv called 'ai'
+# workon ai
+
+# Use python3 anaconda virtualenv called 'ai3'
+source activate ai3
+
+# kube shorcuts
+alias k='kubectl'
+
+# no idea if this is helpful
+java()
+{
+    env DYLD_LIBRARY_PATH= java "$@"
+}
+
+# docker kill everything
+alias dkill='docker kill $(docker ps -q)'
+
+# something bizarre
+alias kubectl='/usr/local/bin/kubectl'
+
+# where the hell am I
+alias dbt='docker-buildtool'
+alias gitver='/Users/catherio/openai/docker-buildtool/bin/git-version'
+alias whereami='docker-buildtool version -f /Users/catherio/openai/vnc-agents/Dockerfile'
+
+# go path things
+export PATH=$PATH:$GOPATH/bin
+
+# gym benchmark keys
+source ~/openai/gym-keys.sh
