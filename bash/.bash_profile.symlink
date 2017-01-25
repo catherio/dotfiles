@@ -82,6 +82,15 @@ export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/mac/cpu/tensorflo
 # ippart tcp://192.168.99.100:2376 -> 192.168.99.100
 alias ippart="sed 's/^[^0-9]*\([a-z0-9\.]*\):[0-9]*$/\1/' <<<"
 
+# added by Anaconda3 4.2.0 installer
+export PATH="/Users/catherio/anaconda3/bin:$PATH"
+
+# OUTDATED: python2 virtualenv called 'ai'
+# workon ai
+
+# Use python3 anaconda virtualenv called 'ai3'
+source activate ai3
+
 # directories I browse to a lot
 alias cdf='cd ~/openai/universe-envs/flashgames/'
 alias cdc='cd ~/openai/universe-envs/controlplane/'
@@ -94,18 +103,39 @@ alias cdb='cd ~/openai/docker-buildtool/'
 alias cdr='cd ~/openai/resource-accounting/'
 alias cdk='cd ~/openai/kubernetes-ec2-autoscaler/'
 alias cds='cd ~/openai/scoreboard-gym/'
+alias cdm='cd ~/openai/openai-benchmark/'
+alias dots='cd ~/.dotfiles'
 
-# added by Anaconda3 4.2.0 installer
-export PATH="/Users/catherio/anaconda3/bin:$PATH"
+# git shortcuts for great victory
+alias g='git'
+alias gc='git commit'
+alias gco='git checkout'
+alias gs='git status'
+alias gst='git status'
+alias ga='git add'
+alias gd='git diff'
+alias gdc='git diff --cached'
+alias gri='git rebase --interactive'
+alias gpr='git pull --rebase'
+alias gf='git fetch'
 
-# OUTDATED: python2 virtualenv called 'ai'
-# workon ai
-
-# Use python3 anaconda virtualenv called 'ai3'
-source activate ai3
-
-# kube shorcuts
+# more shorcuts
 alias k='kubectl'
+alias kgp='kubectl get pods'
+alias kdp='kubectl describe pod'
+alias kgpow='kubectl get pods -o wide'
+export na="--namespace=alloc"
+export nd="--namespace=damodei"
+export nt="--namespace=tools"
+export n="--namespace"
+
+alias ipy='ipython'
+alias dbt='docker-buildtool'
+alias gitver='/Users/catherio/openai/docker-buildtool/bin/git-version'
+alias whereami='docker-buildtool version -f /Users/catherio/openai/vnc-agents/Dockerfile'
+alias dkill='docker kill $(docker ps -q)'
+alias mntefs='sudo mount -t nfs -o intr,tcp,port=2049,nfsvers=4 -v kubernetes-efs-mount.sci.openai.org:/ /mnt/efs'
+alias tma='tmux attach'
 
 # no idea if this is helpful
 java()
@@ -113,19 +143,11 @@ java()
     env DYLD_LIBRARY_PATH= java "$@"
 }
 
-# docker kill everything
-alias dkill='docker kill $(docker ps -q)'
-
 # something bizarre
 alias kubectl='/usr/local/bin/kubectl'
-
-# where the hell am I
-alias dbt='docker-buildtool'
-alias gitver='/Users/catherio/openai/docker-buildtool/bin/git-version'
-alias whereami='docker-buildtool version -f /Users/catherio/openai/vnc-agents/Dockerfile'
 
 # go path things
 export PATH=$PATH:$GOPATH/bin
 
 # gym benchmark keys
-source ~/openai/gym-keys.sh
+source ~/.openai/gym-keys.sh
