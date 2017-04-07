@@ -85,11 +85,9 @@ alias ippart="sed 's/^[^0-9]*\([a-z0-9\.]*\):[0-9]*$/\1/' <<<"
 # added by Anaconda3 4.2.0 installer
 export PATH="/Users/catherio/anaconda3/bin:$PATH"
 
-# OUTDATED: python2 virtualenv called 'ai'
-# workon ai
-
 # Use python3 anaconda virtualenv called 'ai3'
-source activate ai3
+# or the one with tensorflow 1.0 called 'tf1'
+source activate tf1
 
 # directories I browse to a lot
 alias cdf='cd ~/openai/universe-envs/flashgames/'
@@ -103,35 +101,74 @@ alias cdb='cd ~/openai/docker-buildtool/'
 alias cdr='cd ~/openai/resource-accounting/'
 alias cdk='cd ~/openai/kubernetes-ec2-autoscaler/'
 alias cds='cd ~/openai/scoreboard-gym/'
+alias cdos='cd ~/openai/openai-schedule/'
 alias cdm='cd ~/openai/openai-benchmark/'
+alias cdv='cd ~/openai/go-vncdriver'
+alias cdo='cd ~/openai/gym-ocean'
+alias cdrl='cd ~/openai/rl'
 alias dots='cd ~/.dotfiles'
 
 # git shortcuts for great victory
 alias g='git'
-alias gc='git commit'
-alias gco='git checkout'
-alias gs='git status'
-alias gst='git status'
-alias ga='git add'
-alias gd='git diff'
-alias gdc='git diff --cached'
-alias gri='git rebase --interactive'
-alias gpr='git pull --rebase'
-alias gf='git fetch'
+alias gl='git log'; alias glog='git log'; alias gitl='git log'
+alias gb='git branch'; alias gbr='git branch'; alias gitb='git branch';
+alias gc='git commit'; alias gitc='git commit'
+alias gcm='git commit -m'; alias gitcm='git commit -m'
+alias gcam='git commit -am'; alias gitcam='git commit -am'
+alias gco='git checkout'; alias gitco='git checkout'
+alias gs='git status'; alias gst='git status'; alias gits='git status'
+alias ga='git add'; alias gadd='git add'; alias gita='git add'
+alias gd='git diff'; alias gdiff='git diff'; alias gitd='git diff'
+alias gdc='git diff --cached'; alias 'gitdc'='git diff --cached'
+alias gr='git rebase'; alias gitr='git rebase'
+alias gri='git rebase --interactive'; alias gitri='git rebase --interactive'
+alias gra='git rebase --abort'; alias gitra='git rebase --abort'
+alias gpr='git pull --rebase'; alias gitpr='git pull --rebase'
+alias gf='git fetch'; alias gitf='git fetch'; alias gfetch='git fetch'
+alias gp='git push'; alias gpush='git push'; alias gitp='git push'
+alias gma='git merge --abort'; alias gitma='git merge --abort'
+alias gm='git merge'; alias gitm='git merge'; alias gmerge='git merge'
+alias gsh='git stash'; alias gitsh='git stash'; alias gstash='git stash'
+alias grm='git rm'; alias gitrm='git rm';
+alias greset='git reset'; alias gres='git reset'; alias gitres='git reset';
+alias grt='git reset'; alias gitrt='git reset';
+alias gpu='git push --set-upstream origin $(git name-rev HEAD --name-only)'
 
 # more shorcuts
 alias k='kubectl'
-alias kgp='kubectl get pods'
+alias kc='kubectl config';
+alias kcurr='kubectl config current-context'
+alias ksci='kubectl config use-context sci';
+alias kdev='kubectl config use-context dev';
+alias kg='kubectl get';
+alias kgp='kubectl get pods'; alias kgpow='kubectl get pods -o wide'; alias kgpoy='kubectl get pods -o yaml'
+alias kgn='kubectl get node'; alias kgnow='kubectl get node -o wide'; alias kgnoy='kubectl get nodes -o yaml'
+alias kgj='kubectl get job'; alias kgjow='kubectl get job -o wide'; alias kgjoy='kubectl get job -o yaml'
+alias kdel='kubectl delete'
+alias kdelp='kubectl delete pod'; alias kdelj='kubectl delete job'
+alias kd='kubectl describe';
 alias kdp='kubectl describe pod'
-alias kgpow='kubectl get pods -o wide'
+alias kdn='kubectl describe node'
+alias kl='kubectl logs -f'; alias kgl='kubectl logs -f'; alias klf='kubectl logs -f'
 export na="--namespace=alloc"
 export nd="--namespace=damodei"
 export nt="--namespace=tools"
+export ns="--namespace=system"
 export n="--namespace"
+export nj="--namespace=jgray"
 
+alias sb='source ~/.bash_profile'
+alias tf1='source activate tf1'
+alias ai3='source activate ai3'
 alias ipy='ipython'
+alias d='docker'
 alias dbt='docker-buildtool'
+alias dbtv='docker-buildtool version'
+alias dp='docker ps'
+alias dps='docker ps'
+alias dpq='docker ps -q'
 alias gitver='/Users/catherio/openai/docker-buildtool/bin/git-version'
+alias gv='/Users/catherio/openai/docker-buildtool/bin/git-version'
 alias whereami='docker-buildtool version -f /Users/catherio/openai/vnc-agents/Dockerfile'
 alias dkill='docker kill $(docker ps -q)'
 alias mntefs='sudo mount -t nfs -o intr,tcp,port=2049,nfsvers=4 -v kubernetes-efs-mount.sci.openai.org:/ /mnt/efs'
@@ -149,5 +186,32 @@ alias kubectl='/usr/local/bin/kubectl'
 # go path things
 export PATH=$PATH:$GOPATH/bin
 
+# pychecker
+export PATH=$PATH:/Users/catherio/.dotfiles/python/
+
 # gym benchmark keys
 source ~/.openai/gym-keys.sh
+
+# datadog
+export DATADOG_API_KEY=$(cat /mnt/efs/catherio/dd_ra_api_key.txt)
+export DATADOG_APP_KEY=$(cat /mnt/efs/catherio/dd_ra_app_key.txt)
+
+# jupyter
+alias jn='jupyter notebook'
+
+# terraform versions
+if [[ -f /usr/local/share/chtf/chtf.sh ]]; then
+    source "/usr/local/share/chtf/chtf.sh"
+fi
+# brew cask install terraform-0.8.7
+# chtf 0.8.7
+
+# CPAN wanted these when installing tagtime
+PATH="/Users/catherio/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/Users/catherio/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/Users/catherio/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/Users/catherio/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/Users/catherio/perl5"; export PERL_MM_OPT;
+
+# Making a new python file from template is useful
+alias mkpy='cp -n -v ~/openai/templ.py $1'
