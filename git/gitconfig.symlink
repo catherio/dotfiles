@@ -32,7 +32,7 @@
 
 [core]
 	excludesfile = /Users/catherio/.gitignore
-	editor = emacs
+	editor = nano
 [apply]
         whitespace = nowarn
 [mergetool]
