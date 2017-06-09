@@ -70,9 +70,6 @@ source /usr/local/bin/virtualenvwrapper.sh
 # set up Atlas key but don't post it on github
 source ~/.atlas.key
 
-# docify
-docify dev0
-
 # where's tensorflow? python3 edition
 # use the "virtualenv" section of the install guide at https://www.tensorflow.org/versions/r0.11/get_started/os_setup.html
 # Mac OS X, CPU only, Python 3.4 or 3.5:
@@ -88,13 +85,6 @@ export PATH="/Users/catherio/anaconda3/bin:$PATH"
 # Use python3 anaconda virtualenv called 'ai3'
 # or the one with tensorflow 1.0 called 'tf1'
 source activate tf1
-
-# afs things
-alias mntefs='sudo mount -t nfs -o intr,tcp,port=2049,nfsvers=4 -v # kubernetes-efs-mount.sci.openai.org:/ /mnt/efs'
-alias mntafsalpaca='sudo sshfs -o Ciphers=arcfour -o reconnect,allow_other,defer_permissions -o ServerAliveInterval=5 -o IdentityFile=/Users/catherio/.ssh/id_rsa catherio@alpaca-0.devbox.sci.openai-tech.com:/mnt/afs /mnt/afs/'
-alias mntafssci='sudo sshfs -o Ciphers=arcfour -o reconnect,allow_other,defer_permissions -o ServerAliveInterval=5 -o IdentityFile=/Users/catherio/.ssh/id_rsa catherio@azure-east-0.devbox.sci.openai-tech.com:/mnt/afs /mnt/afs/'
-alias mntafs='sudo umount /mnt/afs/ && mntafsalpaca'
-alias mntgluster='sudo mount -t nfs -o intr,vers=3 -v kubernetes-glusterfs-mount.sci.openai.org:/gv0 /mnt/glusterfs'
 
 # directories I browse to a lot
 alias cdf='cd ~/openai/universe-envs/flashgames/'
@@ -225,7 +215,6 @@ PERL_MM_OPT="INSTALL_BASE=/Users/catherio/perl5"; export PERL_MM_OPT;
 alias mkpy='cp -n -v ~/openai/templ.py $1'
 
 # Rapid
-kalpaca
 rscale () { rapid /Users/catherio/openai/rapid/rapid_ocean/$1/config.yml create -i $2 && kubectl scale --replicas 30 jobs/$1-$2-rollouts && kubectl scale --replicas 1 jobs/$1-$2-optimizers; }
 rdel () { rapid /Users/catherio/openai/rapid/rapid_ocean/$1/config.yml delete -i $2; }
 export GYM_LOGLEVEL=INFO
@@ -250,3 +239,6 @@ alias emacsc='emacsclient'
 
 # stupid hackathon
 source ~/Dropbox/Projects/apparel/keys.sh
+
+# don't be docified
+docify local
