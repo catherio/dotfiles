@@ -46,6 +46,7 @@ fi
 
 ##### PERSONAL CONFIGS #####
 platform='linux'  # this is a really really minimal way of detecting OS
+unamestr=$(uname)
 if [[ "$unamestr" == 'Darwin' ]]; then
    platform='osx'
 fi
@@ -179,7 +180,11 @@ export nj="--namespace=jakub"
 export nc="--namespace=catherio"
 export nr="--namespace=rafal"
 
-alias sb='source ~/.bash_profile'
+if [[ $platform == 'osx' ]]; then
+    alias sb='source ~/.bash_profile'
+else
+	alias sb='source ~/.bashrc'
+fi
 alias tf1='source activate tf1'
 alias ai3='source activate ai3'
 alias ipy='ipython'
