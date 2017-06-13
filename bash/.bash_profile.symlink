@@ -277,5 +277,42 @@ fi
 if [ -f '/usr/local/share/google-cloud-sdk/path.bash.inc' ]; then source '/usr/local/share/google-cloud-sdk/path.bash.inc'; fi
 # The next line enables shell command completion for gcloud.
 if [ -f '/usr/local/share/google-cloud-sdk/completion.bash.inc' ]; then source '/usr/local/share/google-cloud-sdk/completion.bash.inc'; fi
+
 # Of course there's an alias I want
 alias gc='gcloud compute'
+
+# From Tom! Thanks Tom
+gclog () { gcloud compute instances get-serial-port-output ${@}; }
+gctail () { gcloud compute instances tail-serial-port-output ${@}; }
+gcssh () {
+  ip=`gcloud compute instances list ${@} --format 'csv(networkInterfaces[0].accessConfigs[0].natIP:label=EXTERNAL_IP)' | tail -1`
+    ssh tom@35.185.216.109 -i $HOME/.ssh/prior_gce
+	}
+gclist () { gcloud compute instances list --format 'table(name,machine_type,status)'; }
+gclistv () { gcloud compute instances list; } # Verbose mode, with more entries
+
+gcdel () { gcloud compute instances delete ${@}; }
+
+gclast () {
+  # Return the name of the last instance
+    gclist | tail -1 | cut -f 1 -d ' '
+}
+
+SYNC_DIR="/Users/catherio/ml"
+gcsync() {
+  ip=`gcloud compute instances list ${@} --format 'csv(networkInterfaces[0].accessConfigs[0].natIP:label=EXTERNAL_IP)' | tail -1`
+  rsync -rv --exclude '*/data/*' $SYNC_DIR/ catherio@${ip}:/home/catherio/ml -e "ssh -i $HOME/.ssh/google_compute_engine"
+}
+
+gcsyncdata() {
+  ip=`gcloud compute instances list ${@} --format 'csv(networkInterfaces[0].accessConfigs[0].natIP:label=EXTERNAL_IP)' | tail -1`
+  rsync -rv $SYNC_DIR/ catherio@${ip}:/home/catherio/ml -e "ssh -i $HOME/.ssh/google_compute_engine"
+}
+
+gcsnap () {
+  # Save a snapshot of your instance
+  snap_name=${1:-"ml-tmp-`date +%s`"}
+  description=${2:-""}
+  instance_name=`gclast`
+  gcloud compute --project "iconic-setup-168819" disks snapshot ${instance_name} --zone "us-west1-b" --description description --snapshot-names ${snap_name}
+}
