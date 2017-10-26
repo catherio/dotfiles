@@ -51,6 +51,11 @@ if [[ "$unamestr" == 'Darwin' ]]; then
    platform='osx'
 fi
 
+# Run google-specific setup
+if [ -f ~/brain/bash_setup.sh ]; then
+   source ~/brain/bash_setup.sh
+fi
+
 # brew told me to put this here
 if [[ $platform == 'osx' ]]; then
     if [ -f $(brew --prefix)/etc/bash_completion ]; then
@@ -79,18 +84,11 @@ PATH=/usr/local/share/python:$PATH
 export PATH
 
 # virtualenvwrapper
-if [[ $platform == 'osx' ]]; then
-    export WORKON_HOME=~/venvs
-    source /usr/local/bin/virtualenvwrapper.sh
-fi
+# if [[ $platform == 'osx' ]]; then
+#    export WORKON_HOME=~/venvs
+#    source /usr/local/bin/virtualenvwrapper.sh
+# fi
 
-# added automatically
-[[ -s ~/.openai/bashrc ]] && source ~/.openai/bashrc
-
-# set up Atlas key but don't post it on github
-if [[ $platform == 'osx' ]]; then
-   source ~/.atlas.key
-fi
 
 # where's tensorflow? python3 edition
 # use the "virtualenv" section of the install guide at https://www.tensorflow.org/versions/r0.11/get_started/os_setup.html
@@ -109,23 +107,6 @@ export PATH="/Users/catherio/anaconda3/bin:$PATH"
 source activate tf1
 
 # directories I browse to a lot
-alias cdf='cd ~/openai/universe-envs/flashgames/'
-alias cdc='cd ~/openai/universe-envs/controlplane/'
-alias cdl='cd ~/openai/universe-envs/allocator/'
-alias cdu='cd ~/openai/universe/'
-alias cdd='cd ~/openai/gym-demonstration/'
-alias cdg='cd ~/openai/gym/'
-alias cda='cd ~/openai/vnc-agents/'
-alias cdb='cd ~/openai/docker-buildtool/'
-alias cdra='cd ~/openai/resource-accounting/'
-alias cdk='cd ~/openai/kubernetes-ec2-autoscaler/'
-alias cds='cd ~/openai/scoreboard-gym/'
-alias cdos='cd ~/openai/openai-schedule/'
-alias cdm='cd ~/openai/openai-benchmark/'
-alias cdv='cd ~/openai/go-vncdriver'
-alias cdo='cd ~/openai/gym-ocean'
-alias cdr='cd ~/openai/rapid'
-alias cdrl='cd ~/openai/rapid'
 alias dots='cd ~/.dotfiles'
 
 # git shortcuts for great victory
@@ -154,32 +135,6 @@ alias greset='git reset'; alias gres='git reset'; alias gitres='git reset';
 alias grt='git reset'; alias gitrt='git reset';
 alias gpu='git push --set-upstream origin $(git name-rev HEAD --name-only)'
 
-# more shorcuts
-alias k='kubectl'
-alias kc='kubectl config';
-alias kcurr='kubectl config current-context'
-alias ksci='kubectl config use-context sci';
-alias kdev='kubectl config use-context dev';
-alias kalpaca='kubectl config use-context alpaca';
-alias kg='kubectl get';
-alias kgp='kubectl get pods'; alias kgpow='kubectl get pods -o wide'; alias kgpoy='kubectl get pods -o yaml'
-alias kgn='kubectl get node'; alias kgnow='kubectl get node -o wide'; alias kgnoy='kubectl get nodes -o yaml'
-alias kgj='kubectl get job'; alias kgjow='kubectl get job -o wide'; alias kgjoy='kubectl get job -o yaml'
-alias kdel='kubectl delete'
-alias kdelp='kubectl delete pod'; alias kdelj='kubectl delete job'
-alias kd='kubectl describe';
-alias kdp='kubectl describe pod'
-alias kdn='kubectl describe node'
-alias kl='kubectl logs -f'; alias kgl='kubectl logs -f'; alias klf='kubectl logs -f'
-export na="--namespace=alloc"
-export nd="--namespace=damodei"
-export nt="--namespace=tools"
-export ns="--namespace=system"
-export n="--namespace"
-export nj="--namespace=jakub"
-export nc="--namespace=catherio"
-export nr="--namespace=rafal"
-
 if [[ $platform == 'osx' ]]; then
     alias sb='source ~/.bash_profile'
 else
@@ -188,17 +143,8 @@ fi
 alias tf1='source activate tf1'
 alias ai3='source activate ai3'
 alias ipy='ipython'
-alias d='docker'
-alias dbt='docker-buildtool'
-alias dbtv='docker-buildtool version'
-alias dp='docker ps'
-alias dps='docker ps'
-alias dpq='docker ps -q'
-alias gitver='/Users/catherio/openai/docker-buildtool/bin/git-version'
-alias gv='/Users/catherio/openai/docker-buildtool/bin/git-version'
-alias whereami='docker-buildtool version -f /Users/catherio/openai/vnc-agents/Dockerfile'
-alias dkill='docker kill $(docker ps -q)'
 alias tma='tmux attach'
+alias jn='jupyter notebook'
 
 # no idea if this is helpful
 java()
@@ -211,26 +157,7 @@ export GOPATH='/Users/catherio/go'
 export PATH=$PATH:$GOPATH/bin
 
 # pychecker
-export PATH=$PATH:/Users/catherio/.dotfiles/python/
-
-# gym benchmark keys
-if [[ $platform == 'osx' ]]; then
-   source ~/.openai/gym-keys.sh
-fi
-
-# datadog
-# export DATADOG_API_KEY=$(cat /mnt/efs/catherio/dd_ra_api_key.txt)
-# export DATADOG_APP_KEY=$(cat /mnt/efs/catherio/dd_ra_app_key.txt)
-
-# jupyter
-alias jn='jupyter notebook'
-
-# terraform versions
-if [[ -f /usr/local/share/chtf/chtf.sh ]]; then
-    source "/usr/local/share/chtf/chtf.sh"
-fi
-# brew cask install terraform-0.8.7
-# chtf 0.8.7
+export PATH=$PATH:/Users/catherio/.dotfiles/python
 
 # CPAN wanted these when installing tagtime
 PATH="/Users/catherio/perl5/bin${PATH:+:${PATH}}"; export PATH;
@@ -242,25 +169,25 @@ PERL_MM_OPT="INSTALL_BASE=/Users/catherio/perl5"; export PERL_MM_OPT;
 # Making a new python file from template is useful
 alias mkpy='cp -n -v ~/openai/templ.py $1'
 
-# Rapid
-rscale () { rapid /Users/catherio/openai/rapid/rapid_ocean/$1/config.yml create -i $2 && kubectl scale --replicas 30 jobs/$1-$2-rollouts && kubectl scale --replicas 1 jobs/$1-$2-optimizers; }
-rdel () { rapid /Users/catherio/openai/rapid/rapid_ocean/$1/config.yml delete -i $2; }
-export GYM_LOGLEVEL=INFO
-
 # Finding stuff
 fname () { find . -name *$1*; }
 
-# Ocean
-export PATH=~/openai/gym-ocean/bin/:"$PATH"
-
-## Sharing bash history
+# Sharing bash history
 export HISTCONTROL=ignoredups:erasedups
 # When the shell exits, append to the history file instead of overwriting it
 shopt -s histappend
 # After each command, append to the history file and reread it
 export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
+# OSX has emacs 22 by default and I want emacs 25
+if [[ $platform == 'osx' ]]; then
+   alias emacs22='/usr/bin/emacs'
+   alias emacs='~/.brew/Cellar/emacs/25.3/bin/emacs'
+fi
+
+
 # Using emacsclient more often would be great
+export ALTERNATE_EDITOR=emacs EDITOR=emacsclient VISUAL=emacsclient
 alias ec='emacsclient'
 alias emc='emacsclient'
 alias emacsc='emacsclient'
