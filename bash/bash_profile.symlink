@@ -93,7 +93,7 @@ export PATH
 # where's tensorflow? python3 edition
 # use the "virtualenv" section of the install guide at https://www.tensorflow.org/versions/r0.11/get_started/os_setup.html
 # Mac OS X, CPU only, Python 3.4 or 3.5:
-export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-0.11.0-py3-none-any.whl
+# export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-0.11.0-py3-none-any.whl
 
 # sometimes I want to strip protocol and port
 # ippart tcp://192.168.99.100:2376 -> 192.168.99.100
@@ -102,8 +102,7 @@ alias ippart="sed 's/^[^0-9]*\([a-z0-9\.]*\):[0-9]*$/\1/' <<<"
 # added by Anaconda3 4.2.0 installer
 export PATH="/Users/catherio/anaconda3/bin:$PATH"
 
-# Use python3 anaconda virtualenv called 'ai3'
-# or the one with tensorflow 1.0 called 'tf1'
+# Use python3 anaconda virtualenv with tensorflow 1.0 called 'tf1'
 source activate tf1
 
 # directories I browse to a lot
@@ -134,6 +133,12 @@ alias grm='git rm'; alias gitrm='git rm';
 alias greset='git reset'; alias gres='git reset'; alias gitres='git reset';
 alias grt='git reset'; alias gitrt='git reset';
 alias gpu='git push --set-upstream origin $(git name-rev HEAD --name-only)'
+
+graus () {
+      git remote add upstream ${@}
+      git remote -v
+}
+alias gfu='git fetch upstream'
 
 if [[ $platform == 'osx' ]]; then
     alias sb='source ~/.bash_profile'
@@ -200,23 +205,20 @@ if hash docify 2>/dev/null; then
     docify local
 fi
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/usr/local/share/google-cloud-sdk/path.bash.inc' ]; then source '/usr/local/share/google-cloud-sdk/path.bash.inc'; fi
-# The next line enables shell command completion for gcloud.
-if [ -f '/usr/local/share/google-cloud-sdk/completion.bash.inc' ]; then source '/usr/local/share/google-cloud-sdk/completion.bash.inc'; fi
-
+# Timestamps are useful
+alias timestamp="date +%Y-%m-%d_%H-%M-%S"
 # Of course there's an alias I want
-alias gc='gcloud compute'
+alias gccc='gcloud compute'
 
 # From Tom! Thanks Tom
 gclog () { gcloud compute instances get-serial-port-output ${@}; }
 gctail () { gcloud compute instances tail-serial-port-output ${@}; }
-gcssh () {
-  ip=`gcloud compute instances list ${@} --format 'csv(networkInterfaces[0].accessConfigs[0].natIP:label=EXTERNAL_IP)' | tail -1`
-    ssh tom@35.185.216.109 -i $HOME/.ssh/prior_gce
-	}
-gclist () { gcloud compute instances list --format 'table(name,machine_type,status)'; }
-gclistv () { gcloud compute instances list; } # Verbose mode, with more entries
+gcip () {
+	 gcloud compute instances list --filter="name=('${@}')" --format 'csv(networkInterfaces[0].accessConfigs[0].natIP:label=EXTERNAL_IP)' | tail -1
+}
+gcssh () { ssh catherio@$(gcip ${@}); }
+# gclist () { gcloud compute instances list --format 'table(name,machine_type,status)'; }
+gclist () { gcloud compute instances list; } # Verbose mode, with more entries
 
 gcdel () { gcloud compute instances delete ${@}; }
 
@@ -226,20 +228,27 @@ gclast () {
 }
 
 SYNC_DIR="/Users/catherio/ml"
-gcsync() {
-  ip=`gcloud compute instances list ${@} --format 'csv(networkInterfaces[0].accessConfigs[0].natIP:label=EXTERNAL_IP)' | tail -1`
-  rsync -rv --exclude '*/data/*' $SYNC_DIR/ catherio@${ip}:/home/catherio/ml -e "ssh -i $HOME/.ssh/google_compute_engine"
+gcsync () {
+  ip=$(gcip ${@});
+  rsync -rv --exclude '*/data/*' $SYNC_DIR/ catherio@${ip}:/home/catherio/ml
 }
 
-gcsyncdata() {
+gcsyncdata () {
   ip=`gcloud compute instances list ${@} --format 'csv(networkInterfaces[0].accessConfigs[0].natIP:label=EXTERNAL_IP)' | tail -1`
   rsync -rv $SYNC_DIR/ catherio@${ip}:/home/catherio/ml -e "ssh -i $HOME/.ssh/google_compute_engine"
 }
 
 gcsnap () {
   # Save a snapshot of your instance
-  snap_name=${1:-"ml-tmp-`date +%s`"}
-  description=${2:-""}
-  instance_name=`gclast`
-  gcloud compute --project "iconic-setup-168819" disks snapshot ${instance_name} --zone "us-west1-b" --description description --snapshot-names ${snap_name}
+  instance_name=${1}
+  snap_name=${2:-"ml-tmp-`date +%s`"}
+  description=${3:-""}
+#  instance_name=`gclast`
+  gcloud compute --project "catherio-research" disks snapshot ${instance_name} --zone "us-west1-b" --description description --snapshot-names ${snap_name}
+}
+
+# SSH setup
+sshsetup () {
+  eval "$(ssh-agent -s)"
+  ssh-add ~/.ssh/id_rsa
 }
