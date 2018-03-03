@@ -102,6 +102,8 @@ alias ippart="sed 's/^[^0-9]*\([a-z0-9\.]*\):[0-9]*$/\1/' <<<"
 # added by Anaconda3 4.2.0 installer
 export PATH="/Users/catherio/anaconda3/bin:$PATH"
 
+export PATH="/home/catherio/miniconda2/bin:$PATH"
+
 # Use python3 anaconda virtualenv with tensorflow 1.0 called 'tf1'
 source activate tf1
 
@@ -190,6 +192,10 @@ if [[ $platform == 'osx' ]]; then
    alias emacs='~/.brew/Cellar/emacs/25.3/bin/emacs'
 fi
 
+# The GCP boxes need emacs25 too
+if [[ $platform = 'linux' ]]; then
+   alias emacs=emacs25
+fi
 
 # Using emacsclient more often would be great
 export ALTERNATE_EDITOR=emacs EDITOR=emacsclient VISUAL=emacsclient
@@ -252,3 +258,9 @@ sshsetup () {
   eval "$(ssh-agent -s)"
   ssh-add ~/.ssh/id_rsa
 }
+
+# Cuda on gpu-testbox
+# export PATH=/usr/local/cuda-8.0/bin${PATH:+:${PATH}}
+# export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64{LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+export PATH=/usr/local/cuda-9.0/bin${PATH:+:${PATH}}
+export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64{LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
