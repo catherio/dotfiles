@@ -101,19 +101,13 @@ alias ippart="sed 's/^[^0-9]*\([a-z0-9\.]*\):[0-9]*$/\1/' <<<"
 
 # added by Anaconda3 4.2.0 installer
 export PATH="/Users/catherio/anaconda3/bin:$PATH"
-
-<<<<<<< HEAD
 export PATH="/home/catherio/miniconda2/bin:$PATH"
 
-# Use python3 anaconda virtualenv with tensorflow 1.0 called 'tf1'
-source activate tf1
-=======
 # Use python3 anaconda virtualenv called 'ai3'
 # or the one with tensorflow 1.0 called 'tf1'
 if [[ $platform == 'linux' ]]; then
    source activate tf1
 fi
->>>>>>> No anaconda on osx, only on desktop
 
 # directories I browse to a lot
 alias dots='cd ~/.dotfiles'
