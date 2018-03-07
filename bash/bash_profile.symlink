@@ -267,3 +267,6 @@ export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64{LD_LIBRARY_PATH:+:${LD_LIBRARY_
 
 # tmux
 alias t='tmux -CC attach || tmux -CC'
+
+# Theano asks for this
+export MKL_THREADING_LAYER=GNU
