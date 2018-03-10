@@ -228,7 +228,7 @@ gctail () { gcloud compute instances tail-serial-port-output ${@}; }
 gcip () {
 	 gcloud compute instances list --filter="name=('${@}')" --format 'csv(networkInterfaces[0].accessConfigs[0].natIP:label=EXTERNAL_IP)' | tail -1
 }
-gcssh () { ssh catherio@$(gcip ${@}); }
+gcssh () { ssh -i ~/.ssh/cloud_key catherio@$(gcip ${@}); }
 # gclist () { gcloud compute instances list --format 'table(name,machine_type,status)'; }
 gclist () { gcloud compute instances list; } # Verbose mode, with more entries
 
