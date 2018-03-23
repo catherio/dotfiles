@@ -259,6 +259,10 @@ gcsnap () {
   gcloud compute --project "catherio-research" disks snapshot ${instance_name} --zone "us-west1-b" --description description --snapshot-names ${snap_name}
 }
 
+grafana () {
+	gcloud compute ssh --ssh-flag=-L3000:localhost:3000 --project=catherio-research --zone us-west1-b nfs-vm
+}
+
 # SSH setup
 sshsetup () {
   eval "$(ssh-agent -s)"
