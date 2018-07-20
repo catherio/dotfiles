@@ -217,6 +217,9 @@ if hash docify 2>/dev/null; then
     docify local
 fi
 
+# no more ag ipynb
+alias ag='ag --ignore *.ipynb'
+
 # Timestamps are useful
 alias timestamp="date +%Y-%m-%d_%H-%M-%S"
 # Of course there's an alias I want
