@@ -159,6 +159,8 @@ alias ipy='ipython'
 alias tma='tmux attach'
 alias jn='jupyter notebook'
 
+db="--pdb --pdbcls=IPython.terminal.debugger:Pdb"  # pytest $db
+
 # no idea if this is helpful
 java()
 {
