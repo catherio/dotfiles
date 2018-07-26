@@ -45,6 +45,16 @@ if ! shopt -oq posix; then
 fi
 
 ##### PERSONAL CONFIGS #####
+
+export LD_LIBRARY_PATH=''
+
+add_to_path() {
+    [[ ":$PATH:" != *":${@}:"* ]] && export PATH="${@}:${PATH}" ;
+}
+add_to_ld_library_path() {
+    [[ ":$LD_LIBRARY_PATH:" != *":${@}:"* ]] && export LD_LIBRARY_PATH="${@}:${LD_LIBRARY_PATH}" ;
+}
+
 platform='linux'  # this is a really really minimal way of detecting OS
 unamestr=$(uname)
 if [[ "$unamestr" == 'Darwin' ]]; then
@@ -80,8 +90,7 @@ alias grep='grep --color=auto'
 
 
 # nicolashery's mac-dev-setup suggested that I get the system python, so ok:
-PATH=/usr/local/share/python:$PATH
-export PATH
+add_to_path /usr/local/share/python
 
 # conda sometimes struggles here though. try this.
 unset _PYTHON_SYSCONFIGDATA_NAME
@@ -104,6 +113,7 @@ unset _PYTHON_SYSCONFIGDATA_NAME_USED
 alias ippart="sed 's/^[^0-9]*\([a-z0-9\.]*\):[0-9]*$/\1/' <<<"
 
 # added by Anaconda3 4.2.0 installer
+<<<<<<< Updated upstream
 export PATH="/Users/catherio/anaconda3/bin:$PATH"
 export PATH="/home/catherio/anaconda3/bin:$PATH"
 
@@ -112,6 +122,13 @@ export PATH="/home/catherio/anaconda3/bin:$PATH"
 if [[ $platform == 'linux' ]]; then
    source activate tf1
 fi
+=======
+if [ -d "/Users/catherio" ] ; then add_to_path "/Users/catherio/anaconda3/bin" ; fi
+if [ -d "/home/catherio" ] ; then add_to_path "/home/catherio/miniconda2/bin" ; fi
+
+# Use python3 anaconda virtualenv with tensorflow 1.0 called 'tf1'
+source activate tf1
+>>>>>>> Stashed changes
 
 # directories I browse to a lot
 alias dots='cd ~/.dotfiles'
@@ -167,19 +184,14 @@ java()
     env DYLD_LIBRARY_PATH= java "$@"
 }
 
-# go path things
-export GOPATH='/Users/catherio/go'
-export PATH=$PATH:$GOPATH/bin
+if [ -d "/Users/catherio" ] ; then
+   # go path things
+   export GOPATH='/Users/catherio/go'
+   add_to_path $GOPATH/bin
 
-# pychecker
-export PATH=$PATH:/Users/catherio/.dotfiles/python
-
-# CPAN wanted these when installing tagtime
-PATH="/Users/catherio/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="/Users/catherio/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/Users/catherio/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/Users/catherio/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/Users/catherio/perl5"; export PERL_MM_OPT;
+   # pychecker
+   add_to_path /Users/catherio/.dotfiles/python
+fi
 
 # Making a new python file from template is useful
 alias mkpy='cp -n -v ~/openai/templ.py $1'
@@ -277,9 +289,16 @@ sshsetup () {
 
 # Cuda on gpu-testbox
 # export PATH=/usr/local/cuda-8.0/bin${PATH:+:${PATH}}
-# export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64{LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-export PATH=/usr/local/cuda-9.0/bin${PATH:+:${PATH}}
-export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64{LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+# export
+if [ -d /usr/local/cuda-8.0 ] ; then
+   add_to_path "/usr/local/cuda-8.0/bin"
+   add_to_ld_library_path "/usr/local/cuda-8.0/lib64"
+fi
+
+if [ -d /usr/local/cuda-9.0 ] ; then
+   add_to_path "/usr/local/cuda-9.0/bin"
+   add_to_ld_library_path "usr/local/cuda-9.0/lib64"
+fi
 
 # tmux
 alias t='tmux -CC attach || tmux -CC'
@@ -295,3 +314,8 @@ if [ -f '/Users/catherio/google-cloud-sdk/path.bash.inc' ]; then source '/Users/
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/catherio/google-cloud-sdk/completion.bash.inc' ]; then source '/Users/catherio/google-cloud-sdk/completion.bash.inc'; fi
+
+export PYTHONDONTWRITEBYTECODE=1
+
+# xmanager
+alias google_xmanager='/google/data/ro/teams/dmgi/google_xmanager.par'
