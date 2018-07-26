@@ -113,22 +113,12 @@ unset _PYTHON_SYSCONFIGDATA_NAME_USED
 alias ippart="sed 's/^[^0-9]*\([a-z0-9\.]*\):[0-9]*$/\1/' <<<"
 
 # added by Anaconda3 4.2.0 installer
-<<<<<<< Updated upstream
-export PATH="/Users/catherio/anaconda3/bin:$PATH"
-export PATH="/home/catherio/anaconda3/bin:$PATH"
 
-# Use python3 anaconda virtualenv called 'ai3'
-# or the one with tensorflow 1.0 called 'tf1'
-if [[ $platform == 'linux' ]]; then
-   source activate tf1
-fi
-=======
 if [ -d "/Users/catherio" ] ; then add_to_path "/Users/catherio/anaconda3/bin" ; fi
 if [ -d "/home/catherio" ] ; then add_to_path "/home/catherio/miniconda2/bin" ; fi
 
 # Use python3 anaconda virtualenv with tensorflow 1.0 called 'tf1'
 source activate tf1
->>>>>>> Stashed changes
 
 # directories I browse to a lot
 alias dots='cd ~/.dotfiles'
@@ -319,3 +309,5 @@ export PYTHONDONTWRITEBYTECODE=1
 
 # xmanager
 alias google_xmanager='/google/data/ro/teams/dmgi/google_xmanager.par'
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
