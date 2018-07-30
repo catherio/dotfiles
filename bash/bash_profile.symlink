@@ -115,7 +115,7 @@ alias ippart="sed 's/^[^0-9]*\([a-z0-9\.]*\):[0-9]*$/\1/' <<<"
 # added by Anaconda3 4.2.0 installer
 
 if [ -d "/Users/catherio" ] ; then add_to_path "/Users/catherio/anaconda3/bin" ; fi
-if [ -d "/home/catherio" ] ; then add_to_path "/home/catherio/miniconda2/bin" ; fi
+if [ -d "/home/catherio" ] ; then add_to_path "/home/catherio/anaconda3/bin" ; fi
 
 # Use python3 anaconda virtualenv with tensorflow 1.0 called 'tf1'
 source activate tf1

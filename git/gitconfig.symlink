@@ -37,8 +37,9 @@
         whitespace = nowarn
 [mergetool]
         keepBackup = false
+	prompt = false
 [difftool]
-        prompt = false
+	prompt = false
 [help]
         autocorrect = 1
 [push]
@@ -59,3 +60,12 @@
 	path = [mergetool "sourcetree"]
 	cmd = /Users/catherio/Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
+[diff "jupyternotebook"]
+	command = git-nbdiffdriver diff
+[merge "jupyternotebook"]
+	driver = git-nbmergedriver merge %O %A %B %L %P
+	name = jupyter notebook merge driver
+[difftool "nbdime"]
+	cmd = git-nbdifftool diff \"$LOCAL\" \"$REMOTE\" \"$BASE\"
+[mergetool "nbdime"]
+	cmd = git-nbmergetool merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
