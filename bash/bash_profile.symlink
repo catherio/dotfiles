@@ -61,6 +61,9 @@ if [[ "$unamestr" == 'Darwin' ]]; then
    platform='osx'
 fi
 
+# Where is brew
+eval $(/opt/homebrew/bin/brew shellenv)
+
 # brew told me to put this here
 if [[ $platform == 'osx' ]]; then
     if [ -f $(brew --prefix)/etc/bash_completion ]; then
@@ -165,10 +168,10 @@ shopt -s histappend
 export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
 # OSX has emacs 22 by default and I want emacs 25
-if [[ $platform == 'osx' ]]; then
-   alias emacs22='/usr/bin/emacs'
-   alias emacs='~/.brew/Cellar/emacs/25.3/bin/emacs'
-fi
+# if [[ $platform == 'osx' ]]; then
+#   alias emacs22='/usr/bin/emacs'
+#   alias emacs='~/.brew/Cellar/emacs/25.3/bin/emacs'
+# fi
 
 # Using emacsclient more often would be great
 export ALTERNATE_EDITOR=emacs EDITOR=emacsclient VISUAL=emacsclient
@@ -190,3 +193,9 @@ export PATH="/Users/catherio/anaconda/bin:$PATH"
 
 # IDK man
 export PYTHONDONTWRITEBYTECODE=1
+
+# fzf?
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# stop warning me
+export BASH_SILENCE_DEPRECATION_WARNING=1
