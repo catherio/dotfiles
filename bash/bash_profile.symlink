@@ -61,11 +61,6 @@ if [[ "$unamestr" == 'Darwin' ]]; then
    platform='osx'
 fi
 
-# Run google-specific setup
-if [ -f ~/brain/bash_setup.sh ]; then
-   source ~/brain/bash_setup.sh
-fi
-
 # brew told me to put this here
 if [[ $platform == 'osx' ]]; then
     if [ -f $(brew --prefix)/etc/bash_completion ]; then
@@ -88,19 +83,9 @@ fi
 
 alias grep='grep --color=auto'
 
-
-# nicolashery's mac-dev-setup suggested that I get the system python, so ok:
-add_to_path /usr/local/share/python
-
 # conda sometimes struggles here though. try this.
 unset _PYTHON_SYSCONFIGDATA_NAME
 unset _PYTHON_SYSCONFIGDATA_NAME_USED
-
-# virtualenvwrapper
-# if [[ $platform == 'osx' ]]; then
-#    export WORKON_HOME=~/venvs
-#    source /usr/local/bin/virtualenvwrapper.sh
-# fi
 
 
 # where's tensorflow? python3 edition
@@ -112,13 +97,6 @@ unset _PYTHON_SYSCONFIGDATA_NAME_USED
 # ippart tcp://192.168.99.100:2376 -> 192.168.99.100
 alias ippart="sed 's/^[^0-9]*\([a-z0-9\.]*\):[0-9]*$/\1/' <<<"
 
-# added by Anaconda3 4.2.0 installer
-
-if [ -d "/Users/catherio" ] ; then add_to_path "/Users/catherio/anaconda3/bin" ; fi
-if [ -d "/home/catherio" ] ; then add_to_path "/home/catherio/anaconda3/bin" ; fi
-
-# Use python3 anaconda virtualenv with tensorflow 1.0 called 'tf1'
-source activate tf1
 
 # directories I browse to a lot
 alias dots='cd ~/.dotfiles'
@@ -160,19 +138,12 @@ if [[ $platform == 'osx' ]]; then
 else
 	alias sb='source ~/.bashrc'
 fi
-alias tf1='source activate tf1'
-alias ai3='source activate ai3'
+
 alias ipy='ipython'
 alias tma='tmux attach'
 alias jn='jupyter notebook'
 
 db="--pdb --pdbcls=IPython.terminal.debugger:Pdb"  # pytest $db
-
-# no idea if this is helpful
-java()
-{
-    env DYLD_LIBRARY_PATH= java "$@"
-}
 
 if [ -d "/Users/catherio" ] ; then
    # go path things
@@ -182,9 +153,6 @@ if [ -d "/Users/catherio" ] ; then
    # pychecker
    add_to_path /Users/catherio/.dotfiles/python
 fi
-
-# Making a new python file from template is useful
-alias mkpy='cp -n -v ~/openai/templ.py $1'
 
 # Finding stuff
 fname () { find . -name *$1*; }
@@ -202,112 +170,23 @@ if [[ $platform == 'osx' ]]; then
    alias emacs='~/.brew/Cellar/emacs/25.3/bin/emacs'
 fi
 
-# The GCP boxes need emacs25 too
-if [[ $platform = 'linux' ]]; then
-   alias emacs=emacs25
-fi
-
 # Using emacsclient more often would be great
 export ALTERNATE_EDITOR=emacs EDITOR=emacsclient VISUAL=emacsclient
 alias ec='emacsclient'
 alias emc='emacsclient'
 alias emacsc='emacsclient'
 
-# stupid hackathon
-# source ~/Dropbox/Projects/apparel/keys.sh
-
-# don't be docified
-if hash docify 2>/dev/null; then
-    docify local
-fi
-
 # no more ag ipynb
 alias ag='ag --ignore *.ipynb'
 
 # Timestamps are useful
 alias timestamp="date +%Y-%m-%d_%H-%M-%S"
-# Of course there's an alias I want
-alias gccc='gcloud compute'
-
-# From Tom! Thanks Tom
-gclog () { gcloud compute instances get-serial-port-output ${@}; }
-gctail () { gcloud compute instances tail-serial-port-output ${@}; }
-gcip () {
-	 gcloud compute instances list --filter="name=('${@}')" --format 'csv(networkInterfaces[0].accessConfigs[0].natIP:label=EXTERNAL_IP)' | tail -1
-}
-gcssh () { ssh -i ~/.ssh/cloud_key catherio@$(gcip ${@}); }
-# gclist () { gcloud compute instances list --format 'table(name,machine_type,status)'; }
-gclist () { gcloud compute instances list; } # Verbose mode, with more entries
-
-gcdel () { gcloud compute instances delete ${@}; }
-
-gclast () {
-  # Return the name of the last instance
-    gclist | tail -1 | cut -f 1 -d ' '
-}
-
-SYNC_DIR="/Users/catherio/ml"
-gcsync () {
-  ip=$(gcip ${@});
-  rsync -rv --exclude '*/data/*' $SYNC_DIR/ catherio@${ip}:/home/catherio/ml
-}
-
-gcsyncdata () {
-  ip=`gcloud compute instances list ${@} --format 'csv(networkInterfaces[0].accessConfigs[0].natIP:label=EXTERNAL_IP)' | tail -1`
-  rsync -rv $SYNC_DIR/ catherio@${ip}:/home/catherio/ml -e "ssh -i $HOME/.ssh/google_compute_engine"
-}
-
-gcsnap () {
-  # Save a snapshot of your instance
-  instance_name=${1}
-  snap_name=${2:-"ml-tmp-`date +%s`"}
-  description=${3:-""}
-#  instance_name=`gclast`
-  gcloud compute --project "catherio-research" disks snapshot ${instance_name} --zone "us-west1-b" --description description --snapshot-names ${snap_name}
-}
-
-grafana () {
-	gcloud compute ssh --ssh-flag=-L3000:localhost:3000 --project=catherio-research --zone us-west1-b nfs-vm
-}
-
-# SSH setup
-sshsetup () {
-  eval "$(ssh-agent -s)"
-  ssh-add ~/.ssh/id_rsa
-}
-
-
-# Cuda on gpu-testbox
-# export PATH=/usr/local/cuda-8.0/bin${PATH:+:${PATH}}
-# export
-if [ -d /usr/local/cuda-8.0 ] ; then
-   add_to_path "/usr/local/cuda-8.0/bin"
-   add_to_ld_library_path "/usr/local/cuda-8.0/lib64"
-fi
-
-if [ -d /usr/local/cuda-9.0 ] ; then
-   add_to_path "/usr/local/cuda-9.0/bin"
-   add_to_ld_library_path "usr/local/cuda-9.0/lib64"
-fi
 
 # tmux
 alias t='tmux -CC attach || tmux -CC'
 
-# Theano asks for this
-export MKL_THREADING_LAYER=GNU
-
 # added by Anaconda3 4.2.0 installer
 export PATH="/Users/catherio/anaconda/bin:$PATH"
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/catherio/google-cloud-sdk/path.bash.inc' ]; then source '/Users/catherio/google-cloud-sdk/path.bash.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/catherio/google-cloud-sdk/completion.bash.inc' ]; then source '/Users/catherio/google-cloud-sdk/completion.bash.inc'; fi
-
+# IDK man
 export PYTHONDONTWRITEBYTECODE=1
-
-# xmanager
-alias google_xmanager='/google/data/ro/teams/dmgi/google_xmanager.par'
-
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
