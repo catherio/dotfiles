@@ -19,7 +19,10 @@ shopt -s checkwinsize
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # pretty boring prompt:
-PS1='\u@\h:\w$ '
+# PS1='\u@\h:\w$ '
+
+# with colors prompt:
+PS1='\[\033[00m\]\[\033[01;35m\]\w\[\033[00m\]$ '
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -174,10 +177,15 @@ export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; histor
 # fi
 
 # Using emacsclient more often would be great
-export ALTERNATE_EDITOR=emacs EDITOR=emacsclient VISUAL=emacsclient
-alias ec='emacsclient'
-alias emc='emacsclient'
-alias emacsc='emacsclient'
+#export ALTERNATE_EDITOR=emacs EDITOR=emacsclient VISUAL=emacsclient
+#alias ec='emacsclient'
+#alias emc='emacsclient'
+#alias emacsc='emacsclient'
+
+export ALTERNATE_EDITOR=""
+export EDITOR="emacsclient -t"                  # $EDITOR opens in terminal
+export VISUAL="emacsclient -c -a emacs"         # $VISUAL opens in GUI mode
+alias ec='emacsclient --create-frame --alternate-editor=""'
 
 # no more ag ipynb
 alias ag='ag --ignore *.ipynb'
@@ -196,6 +204,43 @@ export PYTHONDONTWRITEBYTECODE=1
 
 # fzf?
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always --line-range :500 {}' --height 40% --layout reverse --info inline"
 
 # stop warning me
 export BASH_SILENCE_DEPRECATION_WARNING=1
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/opt/homebrew/Caskroom/miniconda/base/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
+        . "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"
+    else
+        export PATH="/opt/homebrew/Caskroom/miniconda/base/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+# install command fixer
+eval "$(thefuck --alias)"
+alias oops="fuck"
+
+# kubectl
+alias kc='kubectl'
+
+# ssh agent restarting command, I keep forgetting what it is
+alias sshagent="eval '$(ssh-agent -s)'"
+
+
+# github command line
+alias issues="gh issue list | fzf | awk '{print $1}' | xargs gh issue view --web"
+
+# commonly used
+alias coco="coo colab"
+alias cococ="coo colab catherio-dev"
+alias ctc="coo tmux catherio-dev"
+alias cda="cd ~/code/anthropic"
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+
