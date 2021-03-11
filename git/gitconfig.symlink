@@ -32,7 +32,7 @@
 
 [core]
 	excludesfile = /Users/catherio/.gitignore
-	editor = nano
+	editor = emacsclient
 [apply]
         whitespace = nowarn
 [mergetool]
@@ -50,11 +50,12 @@
         default = simple
 [user]
 	name = catherio
-	email = catherio@mit.edu
+	email = catherio@anthropic.com
 [filter "lfs"]
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
 	required = true
+	process = git-lfs filter-process
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = [mergetool "sourcetree"]
@@ -69,3 +70,5 @@
 	cmd = git-nbdifftool diff \"$LOCAL\" \"$REMOTE\" \"$BASE\"
 [mergetool "nbdime"]
 	cmd = git-nbmergetool merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+[credential]
+	helper = cache

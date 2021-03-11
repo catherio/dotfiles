@@ -44,7 +44,9 @@
     <keyboard-shortcut first-keystroke="shift ctrl meta space" />
   </action>
   <action id="CollapseAllRegions" />
-  <action id="CollapseRegion" />
+  <action id="CollapseRegion">
+    <keyboard-shortcut first-keystroke="meta minus" />
+  </action>
   <action id="CollapseSelection" />
   <action id="CommentByBlockComment">
     <keyboard-shortcut first-keystroke="shift ctrl divide" />
@@ -66,7 +68,6 @@
     <keyboard-shortcut first-keystroke="shift ctrl meta f" />
   </action>
   <action id="Console.TableResult.NavigateForeignAction">
-    <mouse-shortcut keystroke="meta button1" />
     <mouse-shortcut keystroke="Force touch" />
     <mouse-shortcut keystroke="button2" />
   </action>
@@ -158,7 +159,9 @@
   </action>
   <action id="ExecuteInPyConsoleAction" />
   <action id="ExpandAllRegions" />
-  <action id="ExpandRegion" />
+  <action id="ExpandRegion">
+    <keyboard-shortcut first-keystroke="meta equals" />
+  </action>
   <action id="ExternalSystem.ProjectRefreshAction" />
   <action id="FileChooser.GotoDesktop" />
   <action id="FileChooser.NewFolder" />
@@ -192,13 +195,13 @@
   <action id="GotoClass" />
   <action id="GotoCustomRegion" />
   <action id="GotoDeclaration">
-    <mouse-shortcut keystroke="meta button1" />
     <mouse-shortcut keystroke="Force touch" />
     <mouse-shortcut keystroke="button2" />
   </action>
   <action id="GotoFile">
     <keyboard-shortcut first-keystroke="shift meta o" />
     <keyboard-shortcut first-keystroke="meta t" />
+    <keyboard-shortcut first-keystroke="meta o" />
   </action>
   <action id="GotoNextError">
     <keyboard-shortcut first-keystroke="shift meta period" />
@@ -261,9 +264,6 @@
   </action>
   <action id="NextTab">
     <keyboard-shortcut first-keystroke="shift meta close_bracket" />
-  </action>
-  <action id="OpenFile">
-    <keyboard-shortcut first-keystroke="meta o" />
   </action>
   <action id="ParameterInfo" />
   <action id="PlaybackLastMacro">
@@ -338,6 +338,10 @@
   <action id="ShowSettings">
     <keyboard-shortcut first-keystroke="meta period" />
   </action>
+  <action id="ShowUsages">
+    <keyboard-shortcut first-keystroke="meta alt f7" />
+    <mouse-shortcut keystroke="meta button1" />
+  </action>
   <action id="SmartSelect">
     <keyboard-shortcut first-keystroke="ctrl up" />
   </action>
@@ -388,6 +392,9 @@
   <action id="ToggleTemporaryLineBreakpoint">
     <keyboard-shortcut first-keystroke="shift meta alt f8" />
     <keyboard-shortcut first-keystroke="shift ctrl meta 8" />
+  </action>
+  <action id="Tool_External Tools_Black">
+    <keyboard-shortcut first-keystroke="ctrl x" second-keystroke="b" />
   </action>
   <action id="Tool_External Tools_black">
     <keyboard-shortcut first-keystroke="ctrl alt l" />

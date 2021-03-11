@@ -233,9 +233,11 @@ alias kc='kubectl'
 # ssh agent restarting command, I keep forgetting what it is
 alias sshagent="eval '$(ssh-agent -s)'"
 
-
 # github command line
 alias issues="gh issue list | fzf | awk '{print $1}' | xargs gh issue view --web"
+
+# diff with color
+alias diff="colordiff"
 
 # commonly used
 alias coco="coo colab"
@@ -244,3 +246,28 @@ alias ctc="coo tmux catherio-dev"
 alias cda="cd ~/code/anthropic"
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
+# henighan aliases
+listnotpushed () {
+    if ! git diff --stat --cached --name-only origin/$(git rev-parse --abbrev-ref HEAD); then
+        git diff --name-only master
+    fi
+}
+alias lnp="listnotpushed"
+
+# pre-commit push: if first push fails, git add+commit and try again
+pp () {
+    if gpu; then
+        echo "success"
+    else
+        listnotpushed | oneline | xargs git add
+        mit "pre commit"
+        gpu
+    fi
+}
+
+
+# better git branch
+gbco() {
+    git branch "$1"
+    git checkout "$1"
+}
